@@ -9,7 +9,7 @@ const Home = () => {
   const [subject, setSubject] = useState("");
   const [footer, setFooter] = useState("");
   const [generated, setGenerated] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true); // 🌙 start dark
+  const [isDarkMode, setIsDarkMode] = useState(true); 
 
   const handleGenerate = () => {
     const moodLower = mood.toLowerCase();
@@ -41,14 +41,14 @@ const Home = () => {
   return (
     <div
       className={`min-h-screen relative flex items-center justify-center p-6 overflow-hidden ${
-        isDarkMode ? "bg-[#0f172a]" : "bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400"
+        isDarkMode
+          ? "bg-[#0f172a]"
+          : "bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400"
         // "min-h-screen bg-gradient-to-br from-purple-800 via-pink-700 to-fuchsia-800 flex items-center justify-center p-6"
 
         // "w-full max-w-xl backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-6"
-        
       }`}
     >
-
       {isDarkMode && (
         <>
           <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
@@ -56,12 +56,15 @@ const Home = () => {
         </>
       )}
 
-
       <button
         onClick={() => setIsDarkMode((prev) => !prev)}
         className="absolute top-4 right-4 p-3 rounded-full bg-white/20 hover:bg-white/30 transition"
       >
-        {isDarkMode ? <Sun className="text-yellow-300" /> : <Moon className="text-blue-800" />}
+        {isDarkMode ? (
+          <Sun className="text-yellow-300" />
+        ) : (
+          <Moon className="text-blue-800" />
+        )}
       </button>
 
       <motion.div
@@ -92,7 +95,7 @@ const Home = () => {
                 setMood={setMood}
                 onGenerate={handleGenerate}
                 disabled={generated}
-                isDarkMode={isDarkMode} 
+                isDarkMode={isDarkMode}
               />
             </motion.div>
           ) : (
@@ -107,7 +110,7 @@ const Home = () => {
                 subject={subject}
                 footer={footer}
                 onReset={handleReset}
-                isDarkMode={isDarkMode} 
+                isDarkMode={isDarkMode}
               />
             </motion.div>
           )}
