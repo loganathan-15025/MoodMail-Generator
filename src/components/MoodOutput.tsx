@@ -10,9 +10,10 @@ type Props = {
   subject: string;
   footer: string;
   onReset: () => void;
+  isDarkMode: boolean; // new prop
 };
 
-const MoodOutput = ({ subject, footer, onReset }: Props) => {
+const MoodOutput = ({ subject, footer, onReset, isDarkMode }: Props) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (text: string) => {
@@ -27,20 +28,47 @@ const MoodOutput = ({ subject, footer, onReset }: Props) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <Card className="backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl rounded-2xl">
+      <Card
+        className={
+          isDarkMode
+            ? "backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl rounded-2xl"
+            : "bg-white border border-gray-200 shadow-xl rounded-2xl"
+        }
+      >
         <CardHeader>
-          <CardTitle className="text-xl font-semibold text-white">
+          <CardTitle
+            className={
+              isDarkMode
+                ? "text-xl font-semibold text-white"
+                : "text-xl font-semibold text-gray-900"
+            }
+          >
             ✨ Your MoodMail Output
           </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-6">
+          {/* Subject */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
+            <label
+              className={
+                isDarkMode
+                  ? "block text-sm font-medium text-gray-300 mb-1"
+                  : "block text-sm font-medium text-gray-700 mb-1"
+              }
+            >
               Subject
             </label>
             <div className="flex gap-2">
-              <Input value={subject} readOnly className="bg-white/20 text-white" />
+              <Input
+                value={subject}
+                readOnly
+                className={
+                  isDarkMode
+                    ? "bg-white/20 text-white"
+                    : "bg-gray-100 text-gray-900"
+                }
+              />
               <Button
                 size="icon"
                 variant="secondary"
@@ -51,15 +79,26 @@ const MoodOutput = ({ subject, footer, onReset }: Props) => {
             </div>
           </div>
 
+          {/* Footer */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
+            <label
+              className={
+                isDarkMode
+                  ? "block text-sm font-medium text-gray-300 mb-1"
+                  : "block text-sm font-medium text-gray-700 mb-1"
+              }
+            >
               Footer Signature
             </label>
             <div className="flex gap-2">
               <Textarea
                 value={footer}
                 readOnly
-                className="bg-white/20 text-white min-h-[100px]"
+                className={
+                  isDarkMode
+                    ? "bg-white/20 text-white min-h-[100px]"
+                    : "bg-gray-100 text-gray-900 min-h-[100px]"
+                }
               />
               <Button
                 size="icon"
@@ -71,6 +110,7 @@ const MoodOutput = ({ subject, footer, onReset }: Props) => {
             </div>
           </div>
 
+          {/* Reset Button */}
           <div className="flex gap-3">
             <Button
               variant="destructive"
@@ -82,6 +122,7 @@ const MoodOutput = ({ subject, footer, onReset }: Props) => {
             </Button>
           </div>
 
+          {/* Copy confirmation */}
           {copied && (
             <motion.div
               initial={{ opacity: 0, y: 5 }}
