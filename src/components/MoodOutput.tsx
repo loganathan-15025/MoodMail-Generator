@@ -1,6 +1,10 @@
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
+import { Copy, RefreshCcw } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 type Props = {
   subject: string;
@@ -9,22 +13,88 @@ type Props = {
 };
 
 const MoodOutput = ({ subject, footer, onReset }: Props) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium">Subject:</label>
-        <Input value={subject} readOnly />
-      </div>
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Card className="backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl rounded-2xl">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold text-white">
+            ✨ Your MoodMail Output
+          </CardTitle>
+        </CardHeader>
 
-      <div>
-        <label className="block text-sm font-medium">Footer Signature:</label>
-        <Textarea value={footer} readOnly />
-      </div>
+        <CardContent className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Subject
+            </label>
+            <div className="flex gap-2">
+              <Input value={subject} readOnly className="bg-white/20 text-white" />
+              <Button
+                size="icon"
+                variant="secondary"
+                onClick={() => handleCopy(subject)}
+              >
+                <Copy size={16} />
+              </Button>
+            </div>
+          </div>
 
-      <Button variant="destructive" className="w-full" onClick={onReset}>
-        Reset
-      </Button>
-    </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Footer Signature
+            </label>
+            <div className="flex gap-2">
+              <Textarea
+                value={footer}
+                readOnly
+                className="bg-white/20 text-white min-h-[100px]"
+              />
+              <Button
+                size="icon"
+                variant="secondary"
+                onClick={() => handleCopy(footer)}
+              >
+                <Copy size={16} />
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              variant="destructive"
+              className="w-full cursor-pointer p-6 font-bold text-1xl"
+              onClick={onReset}
+            >
+              <RefreshCcw size={16} className="mr-2" />
+              Reset
+            </Button>
+          </div>
+
+          {copied && (
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="text-green-400 text-sm text-center"
+            >
+              ✅ Copied to clipboard
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 
